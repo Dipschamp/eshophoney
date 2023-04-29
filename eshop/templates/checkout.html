@@ -8,6 +8,16 @@ Checkout | Lifestyle Electronics
 {% endblock %}
 
 {% block body %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-primary alert-dismissible fade show mb-0" role="alert">
+    {{message}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <i class="fas fa-times"></i>
+    </button>
+</div>
+{% endfor %}
+{% endif %}
 <div class="cart-box-main">
     <div class="container">
         <div class="row">
@@ -102,11 +112,12 @@ Checkout | Lifestyle Electronics
                     </div>
                 </div>
                 <div class="col-sm-6 col-lg-6 mb-3">
+
                     <div class="row">
                         <div class="col-md-12 col-lg-12">
                             <div class="shipping-method-box">
                                 <div class="title-left">
-                                    <h3>Payment type</h3>
+                                    <h3>Payment </h3>
                                 </div>
                                 <div class="mb-4">
                                     <div class="d-block my-3">
