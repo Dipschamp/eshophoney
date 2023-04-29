@@ -17,7 +17,7 @@ def checkout(request):
     for cart in carts:
         total = total + cart.amount
         qty = qty + cart.qty
-    
+
     discount = 10/100 * total
     if discount > 20000:
         discount = 20000
@@ -35,40 +35,45 @@ def checkout(request):
         pin = request.POST['pin']
         payment = request.POST['payment']
         print(payment)
+        if payment == 'cod':
 
-        code = "OD-" + get_random_string(10).upper()
 
-        order = Order(
-            user_id = currentuser.id,
-            first_name = firstname,
-            last_name = lastname,
-            phone = phone,
-            house_no = house_no,
-            street = street,
-            city = city,
-            pin = pin,
-            state = state,
-            total = grand_total,
-            code = code,
-            payment=payment
-        )
-        order.save()
+            code = "OD-" + get_random_string(10).upper()
 
-        for cart in carts:
-            orderpr = OrderProduct(
-                order_id = order.id,
+            order = Order(
                 user_id = currentuser.id,
-                product_id = cart.product_id,
-                qty = cart.qty,
-                price = cart.product.price,
-                amount = cart.amount
+                first_name = firstname,
+                last_name = lastname,
+                phone = phone,
+                house_no = house_no,
+                street = street,
+                city = city,
+                pin = pin,
+                state = state,
+                total = grand_total,
+                code = code,
+                payment=payment
             )
-            orderpr.save()
-        
-        Cart.objects.filter(user_id=currentuser.id).delete()
-        messages.success(request, "Order has been placed. Thank You 😊")
-        return redirect('ShopHome')
-    
+            order.save()
+
+            for cart in carts:
+                orderpr = OrderProduct(
+                    order_id = order.id,
+                    user_id = currentuser.id,
+                    product_id = cart.product_id,
+                    qty = cart.qty,
+                    price = cart.product.price,
+                    amount = cart.amount
+                )
+                orderpr.save()
+
+            Cart.objects.filter(user_id=currentuser.id).delete()
+            messages.success(request, "Order has been placed. Thank You 😊")
+            return redirect('ShopHome')
+        else:
+            messages.success(request, "under development")
+
+
     details = {
         'myuser':myuser,
         'customer':customer,
@@ -78,5 +83,5 @@ def checkout(request):
         'discount':discount,
         'grand_total':grand_total,
     }
-    
+
     return render(request, 'checkout.html', details)
